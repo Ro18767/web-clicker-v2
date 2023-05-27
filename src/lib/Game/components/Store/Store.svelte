@@ -44,15 +44,23 @@
     },
   ];
   const upgradeInfoArrWritable = writable(upgradeInfoArr);
-
-  function updateDamage() {
+  /** @typedef {typeof upgradeInfoArrWritable} upgradeInfoArrWritable */
+  /**
+   * @param {upgradeInfoArrWritable} upgradeInfoArrStore
+   */
+  function updateDamage(upgradeInfoArrStore) {
     DPC = 0;
     DPS = 0;
-    upgradeInfoArr.forEach((upgradeInfo, i) => {
-      let lvl = upgradeInfo.lvl;
-      DPC += upgradeInfo.baseDPC * lvl;
-      DPS += upgradeInfo.baseDPS * lvl;
+    upgradeInfoArrStore.update(() => {
+      upgradeInfoArr.forEach((upgradeInfo) => {
+        let lvl = upgradeInfo.lvl;
+        console.log(lvl);
+        DPC += upgradeInfo.baseDPC * lvl;
+        DPS += upgradeInfo.baseDPS * lvl;
+      });
+      return upgradeInfoArr;
     });
+    return upgradeInfoArr;
   }
   function priceCalculator(basePrice = 0, lvl = 0) {
     return Math.floor(basePrice * Math.pow(1.07, lvl));
@@ -61,8 +69,11 @@
 
 <script>
   import LocalStorage from "$lib/store/LocalStorage.svelte";
+  import { onMount } from "svelte";
   let coinCount = 0;
-  updateDamage();
+  onMount(() => {
+    upgradeInfoArrWritable.set(updateDamage(upgradeInfoArrWritable));
+  });
 </script>
 
 <div class="Store">
@@ -73,12 +84,11 @@
       <div class="upgrade">
         <button
           on:click={() => {
-            console.log($upgradeInfoArrWritable[i].lvl, lvl);
             let price = priceCalculator(basePrice, lvl);
             if (price > coinCount) return;
             $upgradeInfoArrWritable[i].lvl++;
             coinCount -= price;
-            updateDamage();
+            updateDamage(upgradeInfoArrWritable);
           }}>{priceCalculator(basePrice, lvl)} coin</button
         >
         <span>lvl {lvl}. {name}</span>
