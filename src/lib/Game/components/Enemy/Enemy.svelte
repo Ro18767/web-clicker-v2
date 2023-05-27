@@ -5,6 +5,7 @@
   import { playDamage } from "../AudioSetting.svelte";
   import { getDPC, getDPS } from "../Store/Store.svelte";
   import { onMount } from "svelte";
+  import { browser } from "$app/environment";
 
   export let maxLvl = 0;
   export let lvl = maxLvl;
@@ -96,7 +97,11 @@
 <GameStatistic title="Kills" code="kills" bind:value={killCount} />
 <button class="Enemy" on:click={click}>
   <span>{lvl + 1} lvl.</span>
-  <div class="image"><img {src} {alt} /></div>
+  <div class="image">
+    {#if browser}
+      <img {src} {alt} />
+    {/if}
+  </div>
   <span>{Math.ceil(hp)}/{fullHp}</span>
 </button>
 
@@ -107,7 +112,7 @@
   .Enemy {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: 1fr auto 1fr;
     height: 100%;
     width: 100%;
     justify-content: space-evenly;
