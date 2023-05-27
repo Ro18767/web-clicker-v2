@@ -1,15 +1,16 @@
 <script>
+  import { getImageDead, getImageAlive } from "./image.js";
   import LocalStorage from "$lib/store/LocalStorage.svelte";
-  import GameStatistic from "./Statistics/GameStatistic.svelte";
-  import { playDamage } from "./AudioSetting.svelte";
-  import { getDPC, getDPS } from "./Store/Store.svelte";
+  import GameStatistic from "../Statistics/GameStatistic.svelte";
+  import { playDamage } from "../AudioSetting.svelte";
+  import { getDPC, getDPS } from "../Store/Store.svelte";
   import { onMount } from "svelte";
 
   export let maxLvl = 0;
   export let lvl = maxLvl;
   export let hp = 10;
   export let fullHp = 10;
-  export let name = "Slime";
+  let name = "Slime";
 
   $: hp = fullHp;
   $: fullHp = Math.round(10 * (lvl + Math.pow(1.55, lvl)));
@@ -48,6 +49,21 @@
   let killCount = 0;
 
   let lastUpdateTime = 0;
+  /** @type {string?} */
+  let src = null;
+  let alt = "";
+  let alive = true;
+  $: alive = hp > 0;
+  $: {
+    if (alive) {
+      src = getImageAlive();
+      alt = name;
+    }
+    if (!alive) {
+      src = getImageDead();
+      alt = `Dead ${name}`;
+    }
+  }
   onMount(() => {
     let rid = requestAnimationFrame(function update(currentTime) {
       rid = requestAnimationFrame(update);
@@ -79,7 +95,8 @@
 <GameStatistic title="Clicks" code="clicks" bind:value={clickCount} />
 <GameStatistic title="Kills" code="kills" bind:value={killCount} />
 <button class="Enemy" on:click={click}>
-  <span>{lvl + 1} lvl. {hp > 0 ? "" : "Dead"} {name}</span>
+  <span>{lvl + 1} lvl.</span>
+  <div class="image"><img {src} {alt} /></div>
   <span>{Math.ceil(hp)}/{fullHp}</span>
 </button>
 
@@ -94,5 +111,17 @@
     height: 100%;
     width: 100%;
     justify-content: space-evenly;
+  }
+  .image {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+  }
+  .image > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    object-fit: contain;
   }
 </style>
