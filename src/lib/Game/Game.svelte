@@ -21,9 +21,6 @@
 
 <style>
   .Game {
-    --color-main: #333333;
-    --color-text: #ffffff;
-
     width: 100%;
     height: 100%;
     padding: 0;
