@@ -105,9 +105,9 @@
     grid-area: Enemy;
   }
   .Enemy {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     height: 100%;
     width: 100%;
     justify-content: space-evenly;
@@ -123,5 +123,11 @@
     height: 100%;
     inset: 0;
     object-fit: contain;
+  }
+  span {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
   }
 </style>

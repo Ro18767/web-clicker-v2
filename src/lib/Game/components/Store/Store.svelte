@@ -54,7 +54,6 @@
     upgradeInfoArrStore.update(() => {
       upgradeInfoArr.forEach((upgradeInfo) => {
         let lvl = upgradeInfo.lvl;
-        console.log(lvl);
         DPC += upgradeInfo.baseDPC * lvl;
         DPS += upgradeInfo.baseDPS * lvl;
       });
