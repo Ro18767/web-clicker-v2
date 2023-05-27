@@ -18,6 +18,9 @@ const config = {
 			fallback: null,
 			strict: true,
 		}),
+		alias: {
+			'$lib/*': './src/lib/*',
+		}
 	}
 };
 
