@@ -112,14 +112,14 @@
   .Enemy {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
     height: 100%;
     width: 100%;
     justify-content: space-evenly;
   }
   .image {
     width: 100%;
-    padding-top: 100%;
+    height: 100%;
     position: relative;
   }
   .image > img {
