@@ -1,6 +1,6 @@
 <script context="module">
-  import musicSrc from "$lib/audio/music/Валентин Стрыкало - Так гріє.mp3";
-  import dameageSFXSrc from "$lib/audio/SFX/Damage.wav";
+  import musicSrc from "./../audio/music/Валентин Стрыкало - Так гріє.mp3";
+  import dameageSFXSrc from "./../audio/SFX/Damage.wav";
   import { get, writable } from "svelte/store";
   import { browser } from "$app/environment";
 
