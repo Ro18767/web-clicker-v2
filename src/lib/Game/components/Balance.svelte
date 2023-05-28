@@ -1,17 +1,15 @@
 <script>
-  import LocalStorage from "$lib/store/LocalStorage.svelte";
-  import GameStatistic from "./Statistics/GameStatistic.svelte";
-  let value = 0;
-  let maxValue = 0;
+  import { localStorageWriteble } from "$lib/store/localStorageStore.js";
+  import { gameStatisticStore } from './Statistics/GameStatistics.js';
+  let value = localStorageWriteble("Balance.coins", 0);
+  let maxValue = gameStatisticStore("Max Coins", "maxCoinCount", 0);
 
-  $: if (value > maxValue) maxValue = value;
+  $: if ($value > $maxValue) $maxValue = $value;
 </script>
 
-<GameStatistic title="Max Coins" code="maxCoinCount" bind:value={maxValue} />
-<LocalStorage code="Balance.coins" bind:value />
 <div class="Balance">
   <span class="display">
-    {value} coin
+    {$value} coin
   </span>
 </div>
 

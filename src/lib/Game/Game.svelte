@@ -1,11 +1,14 @@
 <script>
   import Balance from "./components/Balance.svelte";
-  import AudioSetting from "./components/AudioSetting.svelte";
+  import AudioSetting from "$lib/Audio/AudioSetting.svelte";
   import Enemy from "./components/Enemy/Enemy.svelte";
   import LevelSelector from "./components/LevelSelector.svelte";
   import SaveSetting from "./components/SaveSetting.svelte";
   import GameStatistics from "./components/Statistics/GameStatistics.svelte";
   import Store from "./components/Store/Store.svelte";
+  import { setContext } from 'svelte';
+  
+  setContext('isInsideGame', true);
 </script>
 
 <div class="Game">
@@ -17,8 +20,8 @@
   <Enemy />
   <AudioSetting />
   <SaveSetting />
+  
 </div>
-
 <style>
   .Game {
     width: 100%;

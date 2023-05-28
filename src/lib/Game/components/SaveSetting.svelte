@@ -1,8 +1,10 @@
 <script>
-  import { clear } from "$lib/store/LocalStorage.svelte";
+  import { goto } from "$app/navigation";
+  import { localStorageClear } from "$lib/store/localStorageStore.js";
   function reset() {
     if (!window.confirm("Are you sure you want to delete the save?")) return;
-    clear();
+    localStorageClear();
+    goto("/");
   }
 </script>
 

@@ -1,16 +1,14 @@
 <script>
-  import LocalStorage from "$lib/store/LocalStorage.svelte";
+  import { localStorageWriteble } from "$lib/store/localStorageStore.js";
 
-  export let maxLvl = 0;
-  export let lvl = maxLvl;
+  export let maxLvl = localStorageWriteble("Game.maxLvl", 0);
+  export let lvl = localStorageWriteble("Game.lvl", 0);
 </script>
 
-<LocalStorage code="Game.maxLvl" bind:value={maxLvl} />
-<LocalStorage code="Game.lvl" bind:value={lvl} />
 <div class="LevelSelector">
   <div class="lvls">
-    {#each { length: maxLvl + 1 } as _, i}
-      <button on:click={() => (lvl = i)}>{i + 1}</button>
+    {#each { length: $maxLvl + 1 } as _, i}
+      <button on:click={() => ($lvl = i)}>{i + 1}</button>
     {/each}
   </div>
 </div>

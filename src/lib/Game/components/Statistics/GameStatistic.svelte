@@ -1,12 +1,21 @@
 <script>
-  import LocalStorage from "$lib/store/LocalStorage.svelte";
-  import { add } from "./GameStatistics.svelte";
   export let title = "";
-  export let code = "";
-  /** @type {unknown}*/
-  export let value;
-
-  add(title, code, value);
+  /** @type {import('svelte/store').Readable<unknown>}*/
+  export let store;
 </script>
 
-<LocalStorage code="GameStatistic.{code}" bind:value />
+<div class="GameStatistic">
+  <span class="title">{title}</span>
+  <span class="value">{$store}</span>
+</div>
+
+<style>
+  .GameStatistic {
+    overflow: auto;
+  }
+
+  .GameStatistic .title::after {
+    content: ": ";
+    display: inline;
+  }
+</style>

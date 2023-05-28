@@ -1,5 +1,5 @@
 <script context="module">
-  import { writable } from "svelte/store";
+  import { get, writable } from "svelte/store";
 
   let DPC = 0;
   let DPS = 0;
@@ -9,7 +9,7 @@
   export function getDPS() {
     return DPS;
   }
-  const upgradeInfoArr = [
+  const upgradeInfoArr = /** @type {const} */ ([
     {
       name: "Damage Per Click",
       code: "hero.click.0",
@@ -42,56 +42,34 @@
       baseDPS: 74,
       lvl: 0,
     },
-  ];
+  ]);
+  /** @typedef {upgradeInfoArr[number]} upgradeInfo */
+
   const upgradeInfoArrWritable = writable(upgradeInfoArr);
-  /** @typedef {typeof upgradeInfoArrWritable} upgradeInfoArrWritable */
-  /**
-   * @param {upgradeInfoArrWritable} upgradeInfoArrStore
-   */
-  function updateDamage(upgradeInfoArrStore) {
-    DPC = 0;
-    DPS = 0;
-    upgradeInfoArrStore.update(() => {
-      upgradeInfoArr.forEach((upgradeInfo) => {
-        let lvl = upgradeInfo.lvl;
-        DPC += upgradeInfo.baseDPC * lvl;
-        DPS += upgradeInfo.baseDPS * lvl;
-      });
-      return upgradeInfoArr;
-    });
-    return upgradeInfoArr;
-  }
-  function priceCalculator(basePrice = 0, lvl = 0) {
-    return Math.floor(basePrice * Math.pow(1.07, lvl));
-  }
 </script>
 
 <script>
-  import LocalStorage from "$lib/store/LocalStorage.svelte";
+  import Hero from "./Hero.svelte";
   import { onMount } from "svelte";
-  let coinCount = 0;
+
   onMount(() => {
-    upgradeInfoArrWritable.set(updateDamage(upgradeInfoArrWritable));
+    upgradeInfoArrWritable.set(JSON.parse(JSON.stringify(upgradeInfoArr)));
   });
+  $: {
+    DPC = 0;
+    DPS = 0;
+    $upgradeInfoArrWritable.forEach((upgradeInfo) => {
+      let lvl = upgradeInfo.lvl;
+      DPC += upgradeInfo.baseDPC * lvl;
+      DPS += upgradeInfo.baseDPS * lvl;
+    });
+  }
 </script>
 
 <div class="Store">
-  <LocalStorage code="Balance.coins" bind:value={coinCount} />
   <div class="upgrades">
-    {#each $upgradeInfoArrWritable as { name, code, basePrice, baseDPC, baseDPS, lvl }, i (i)}
-      <LocalStorage code="Store.{code}.lvl" bind:value={lvl} />
-      <div class="upgrade">
-        <button
-          on:click={() => {
-            let price = priceCalculator(basePrice, lvl);
-            if (price > coinCount) return;
-            $upgradeInfoArrWritable[i].lvl++;
-            coinCount -= price;
-            updateDamage(upgradeInfoArrWritable);
-          }}>{priceCalculator(basePrice, lvl)} coin</button
-        >
-        <span>lvl {lvl}. {name}</span>
-      </div>
+    {#each $upgradeInfoArrWritable as upgradeInfo, i (i)}
+      <Hero {upgradeInfo} />
     {/each}
   </div>
 </div>
@@ -108,17 +86,5 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
-  }
-
-  .Store .upgrade {
-    display: flex;
-    justify-content: space-between;
-    gap: 1em;
-    flex-wrap: wrap;
-  }
-
-  .Store .upgrade button {
-    appearance: none;
-    border-width: 1px;
   }
 </style>
