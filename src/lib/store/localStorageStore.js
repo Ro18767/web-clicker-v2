@@ -28,18 +28,34 @@ export function localStorageWriteble(code = "", initialValue) {
     let savedInfo = STOREGE_USAGE_TNFO_MAP.get(code);
     if (savedInfo != null) return savedInfo.store;
     initialValue = getFromLocalStorage(code) ?? initialValue;
-    let { set, subscribe, update } = writable(initialValue);
-    let unsubscribe = subscribe((value) => setInLocalStorage(code, value));
+    let { set, subscribe: subscribe2, update } = writable(initialValue);
+    /** @type {import('svelte/store').Unsubscriber?} */
+    let unsubscribe;
     /** @type {import('svelte/store').Writable<T>} */
     let store = {
-        set,
-        update,
-        subscribe: (...subscribeArgs) => {
-            let unsubscribeCurrent = subscribe(...subscribeArgs);
+        set: (...ffffff) => {
+            console.log("set", code);
+            // console.log(...ffffff);
+            set(...ffffff);
+        },
+        update: (...ffffff) => {
+            console.log("update", code);
+            // console.log(...ffffff);
+            update(...ffffff);
+        },
+        subscribe: (run, invalidate) => {
+            let unsubscribeCurrent = subscribe2(run, invalidate);
             info.subscriberCount++;
+            unsubscribe ??= subscribe2((value) => {
+                setInLocalStorage(code, value);
+            });
             return () => {
                 unsubscribeCurrent();
-                if (0 === --info.subscriberCount) unsubscribe();
+                info.subscriberCount--;
+                if (!info.subscriberCount && unsubscribe) {
+                    unsubscribe();
+                    unsubscribe = null;
+                }
             };
         },
     };
