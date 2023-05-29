@@ -19,7 +19,7 @@
   function click() {
     if (isDead()) return;
 
-    clickCount.set($clickCount + 1);
+    $clickCount++;
     dealDamage(getDPC());
     playDamage();
   }

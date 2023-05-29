@@ -10,7 +10,6 @@ import { browser } from "$app/environment";
  * @property {number} subscriberCount
  * @property {string} code
  * @property {import('svelte/store').Writable<T>} store
- * @property {import('svelte/store').Unsubscriber} unsubscribe
  * @property {T} initialValue
  */
 
@@ -33,16 +32,8 @@ export function localStorageWriteble(code = "", initialValue) {
     let unsubscribe;
     /** @type {import('svelte/store').Writable<T>} */
     let store = {
-        set: (...ffffff) => {
-            console.log("set", code);
-            // console.log(...ffffff);
-            set(...ffffff);
-        },
-        update: (...ffffff) => {
-            console.log("update", code);
-            // console.log(...ffffff);
-            update(...ffffff);
-        },
+        set,
+        update,
         subscribe: (run, invalidate) => {
             let unsubscribeCurrent = subscribe2(run, invalidate);
             info.subscriberCount++;
@@ -64,7 +55,6 @@ export function localStorageWriteble(code = "", initialValue) {
         code,
         initialValue,
         store,
-        unsubscribe,
     };
 
     STOREGE_USAGE_TNFO_MAP.set(code, info);
