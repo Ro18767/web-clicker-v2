@@ -1,9 +1,10 @@
 <script>
+  import { base } from '$app/paths';
   import AudioSetting from "$lib/Audio/AudioSetting.svelte";
 </script>
 
 <div class="Menu">
-  <a class="play-btn" href="/game">PLAY</a>
+  <a class="play-btn" href="{base}/game">PLAY</a>
   <AudioSetting />
 </div>
 

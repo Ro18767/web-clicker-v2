@@ -1,9 +1,7 @@
 <script context="module">
-  import { page } from "$app/stores";
-  import { localStorageWriteble } from "../store/localStorageStore.js";
   import { enabled as musicEnabled } from "./music.js";
+  import { enabled as sfxEnabled } from "./sfx.js";
 
-  const sfxEnabled = localStorageWriteble("AudioSetting.sfx.enabled", true);
 </script>
 
 <div class="AudioSetting">
