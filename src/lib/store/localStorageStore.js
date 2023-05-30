@@ -26,8 +26,8 @@ const STOREGE_USAGE_TNFO_MAP = new Map();
 export function localStorageWriteble(code = "", initialValue) {
     let savedInfo = STOREGE_USAGE_TNFO_MAP.get(code);
     if (savedInfo != null) return savedInfo.store;
-    initialValue = getFromLocalStorage(code) ?? initialValue;
-    let { set, subscribe: subscribe2, update } = writable(initialValue);
+    let currentValue = getFromLocalStorage(code) ?? initialValue;
+    let { set, subscribe: subscribe2, update } = writable(currentValue);
     /** @type {import('svelte/store').Unsubscriber?} */
     let unsubscribe;
     /** @type {import('svelte/store').Writable<T>} */
@@ -100,8 +100,12 @@ function getFromLocalStorage(code = "") {
  */
 export function localStorageClear() {
     if (!browser) return;
-    STOREGE_USAGE_TNFO_MAP.forEach(({ initialValue, store, code }) => {
-        store.set(initialValue);
+    Object.keys(window.localStorage).forEach(code => {
+        let info = STOREGE_USAGE_TNFO_MAP.get(code);
+        if (info != null) {
+            let { store, initialValue } = info;
+            store.set(initialValue);
+        }
         window.localStorage.removeItem(code);
     });
 }

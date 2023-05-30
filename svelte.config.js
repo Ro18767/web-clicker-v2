@@ -24,7 +24,7 @@ const config = {
 			'$lib/*': './src/lib/*',
 		},
 		paths: {
-            base: '/web-clicker-v2'//dev ? '' : process.env.BASE_PATH,
+            base: dev ? '' : process.env.BASE_PATH,
         }
 	}
 };
