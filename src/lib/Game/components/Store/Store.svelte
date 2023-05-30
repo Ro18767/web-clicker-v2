@@ -1,5 +1,5 @@
 <script context="module">
-  import { get, writable } from "svelte/store";
+  import { derived, writable } from "svelte/store";
 
   let DPC = 0;
   let DPS = 0;
@@ -9,7 +9,7 @@
   export function getDPS() {
     return DPS;
   }
-  const upgradeInfoArr = /** @type {const} */ ([
+  const initialUpgradeInfoArr = /** @type {const} */ ([
     {
       name: "Damage Per Click",
       code: "hero.click.0",
@@ -43,32 +43,39 @@
       lvl: 0,
     },
   ]);
-  /** @typedef {upgradeInfoArr[number]} upgradeInfo */
+  /** @typedef {initialUpgradeInfoArr[number]} upgradeInfo */
 
-  const upgradeInfoArrWritable = writable(upgradeInfoArr);
+  let upgradeInfoArr = /** @type {upgradeInfo[]} */ (
+    JSON.parse(JSON.stringify(initialUpgradeInfoArr))
+  );
 </script>
 
 <script>
   import Hero from "./Hero.svelte";
   import { onMount } from "svelte";
+  import { localStorageWriteble } from "$lib/store/localStorageStore.js";
 
-  onMount(() => {
-    upgradeInfoArrWritable.set(JSON.parse(JSON.stringify(upgradeInfoArr)));
-  });
-  $: {
-    DPC = 0;
-    DPS = 0;
-    $upgradeInfoArrWritable.forEach((upgradeInfo) => {
-      let lvl = upgradeInfo.lvl;
-      DPC += upgradeInfo.baseDPC * lvl;
-      DPS += upgradeInfo.baseDPS * lvl;
-    });
-  }
+  let lvlArr = derived(
+    upgradeInfoArr.map(({ code, lvl }) =>
+      localStorageWriteble(`Store.${code}.lvl`, /** @type {number} */ (lvl))
+    ),
+    (lvlArr) => {
+      DPC = 0;
+      DPS = 0;
+      for (let i = 0; i < upgradeInfoArr.length; i++) {
+        const upgradeInfo = upgradeInfoArr[i];
+        DPC += upgradeInfo.baseDPC * lvlArr[i];
+        DPS += upgradeInfo.baseDPS * lvlArr[i];
+      }
+      upgradeInfoArr = upgradeInfoArr;
+    }
+  );
+  $: $lvlArr;
 </script>
 
 <div class="Store">
   <div class="upgrades">
-    {#each $upgradeInfoArrWritable as upgradeInfo, i (i)}
+    {#each upgradeInfoArr as upgradeInfo, i (i)}
       <Hero {upgradeInfo} />
     {/each}
   </div>
