@@ -109,3 +109,15 @@ export function localStorageClear() {
         window.localStorage.removeItem(code);
     });
 }
+/**
+ * @returns {void}
+ */
+export function localStorageExport() {
+    
+}
+/**
+ * @returns {void}
+ */
+export function localStorageImport() {
+    
+}
