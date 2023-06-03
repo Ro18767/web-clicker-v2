@@ -1,25 +1,41 @@
 <script>
-  import { base } from '$app/paths';
+  import { base } from "$app/paths";
   import AudioSetting from "$lib/Audio/AudioSetting.svelte";
 </script>
 
 <div class="Menu">
-  <a class="play-btn" href="{base}/game">PLAY</a>
+  <div class="PlayButtonWrap">
+    <a class="play-btn" href="{base}/game">PLAY</a>
+  </div>
   <AudioSetting />
 </div>
 
 <style>
+  .Menu > :global(*) {
+    padding: 0.5em;
+  }
   .Menu {
     width: 100%;
     height: 100%;
     padding: 0;
     margin: 0;
 
+    grid-template-areas:
+      "Play"
+      "AudioSetting";
+
+    display: grid;
     position: relative;
+
+    grid-template-rows: 1fr auto;
+  }
+  .PlayButtonWrap {
+    display: flex;
+    grid-area: Play;
+    justify-content: center;
+    align-items: center;
   }
   .play-btn {
-    width: 100%;
-    height: 100%;
     padding: 0;
     margin: 0;
 
