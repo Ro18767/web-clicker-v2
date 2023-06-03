@@ -112,12 +112,40 @@ export function localStorageClear() {
 /**
  * @returns {void}
  */
-export function localStorageExport() {
-    
+export function localStorageExport() 
+{
+    if (!browser) return;
+
+    const array = [JSON.stringify(window.localStorage)];
+    const blob = new Blob(array, { type: "application/octet-stream" });
+
+    const link = document.createElement("a");
+    link.style.display = "none";
+    let url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = "Save.json";
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
 }
 /**
  * @returns {void}
  */
-export function localStorageImport() {
+export function localStorageImport() 
+{
+    if (!browser) return;
     
+    const input = document.createElement("input");
+    input.style.display = "none";
+    input.type = "file";
+    document.body.append(input);
+    console.log("a");
+    input.click();
+    console.log("b");
+    input.onchange = ()=>
+    {
+        console.log(input.value);
+    }
+    //input.remove();
 }
