@@ -14,7 +14,7 @@ const statisticsWritable = writable([]);
 /** 
  * @type {import('svelte/store').Readable<StatisticInfo[]>}
  */
-export const statistics = statisticsWwritable;
+export const statistics = statisticsWritable;
 
 /**
  * @template T
@@ -31,7 +31,7 @@ export function gameStatisticStore(title = "", code = "", value) {
             code,
             store
         });
-        statisticsWwritable.set(array);
+        statisticsWritable.set(array);
     })();
     return store;
 }
