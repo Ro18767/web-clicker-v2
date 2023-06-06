@@ -7,11 +7,14 @@ import { localStorageWriteble } from "$lib/store/localStorageStore.js";
  * @property {string} code
  * @property {import('svelte/store').Writable<unknown>} store
  */
-
+/** 
+ * @type {import('svelte/store').Writable<StatisticInfo[]>}
+ */
+const statisticsWritable = writable([]);
 /** 
  * @type {import('svelte/store').Readable<StatisticInfo[]>}
  */
-export const statistics = writable([]);
+export const statistics = statisticsWwritable;
 
 /**
  * @template T
@@ -28,7 +31,7 @@ export function gameStatisticStore(title = "", code = "", value) {
             code,
             store
         });
-        /** @type {import('svelte/store').Writable<StatisticInfo[]>} */(statistics).set(array);
+        statisticsWwritable.set(array);
     })();
     return store;
 }
