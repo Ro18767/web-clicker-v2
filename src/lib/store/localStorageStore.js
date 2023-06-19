@@ -131,9 +131,62 @@ export function localStorageExport() {
     URL.revokeObjectURL(url);
 }
 /**
+ * @returns {void}
+ */
+function initializeInput() {
+    input = document.createElement("input");
+
+    input.style.display = "none";
+    input.type = "file";
+    document.body.append(input);
+
+    input.onchange = () => {
+        const file = input.files?.[0];
+
+        input.value = '';
+
+        if (file == null)
+            return;
+
+        file.text()
+            .then((result) => {
+                let newSave;
+                try {
+                    newSave = JSON.parse(result);
+                } catch (error) {
+                    console.error(error);
+                    alert('save is not valid');
+                }
+
+                if (newSave == null)
+                    return;
+                if (typeof newSave !== 'object')
+                    return;
+
+                window.localStorage.clear();
+                Object.entries(newSave).forEach(([key, value]) => {
+                    if (typeof key !== 'string')
+                        return;
+                    if (typeof value !== 'string')
+                        return;
+
+                    window.localStorage.setItem(key, value);
+                });
+
+                window.location.href = `${base}/`;
+
+            })
+            .catch((err) => {
+                console.error(err);
+                window.alert('save is not valid');
+            });
+    };
+}
+/**
  * @type {HTMLInputElement} 
  */
 let input;
+
 /**
  * @returns {void}
  */
@@ -141,54 +194,10 @@ export function localStorageImport() {
     if (!browser) return;
 
     if (input == null) {
-        input = document.createElement("input");
-
-        input.style.display = "none";
-        input.type = "file";
-        document.body.append(input);
-
-        input.onchange = () => {
-            const file = input.files?.[0];
-
-            input.value = '';
-
-            if (file == null) return;
-
-            file.text()
-                .then((result) => {
-                    console.log(result);
-                    let newSave
-                    try {
-                        newSave = JSON.parse(result);
-                    } catch (error) {
-                        console.error(error);
-                        alert('save is not valid');
-                    }
-
-                    if (newSave == null) return;
-                    if (typeof newSave !== 'object') return;
-
-                    window.localStorage.clear();
-                    Object.entries(newSave).forEach(([key, value]) => {
-                        if (typeof key !== 'string') return;
-                        if (typeof value !== 'string') return;
-
-                        window.localStorage.setItem(key, value);
-                    });
-
-                    window.location.href = `${base}/`;
-
-                })
-                .catch((err) => {
-                    console.error(err);
-                    window.alert('save is not valid');
-                });
-        };
+        initializeInput();
     }
 
-    console.log("a");
     input.click();
-    console.log("b");
 
-    //input.remove();
+   
 }
