@@ -3,7 +3,6 @@
   import AudioSetting from "$lib/Audio/AudioSetting.svelte";
   import Enemy from "./components/Enemy/Enemy.svelte";
   import LevelSelector from "./components/LevelSelector.svelte";
-  import SaveSetting from "./components/SaveSetting.svelte";
   import GameStatistics from "./components/Statistics/GameStatistics.svelte";
   import Store from "./components/Store/Store.svelte";
   import { setContext } from 'svelte';
