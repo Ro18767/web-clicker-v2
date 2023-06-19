@@ -1,6 +1,7 @@
 <script>
   import { base } from "$app/paths";
   import AudioSetting from "$lib/Audio/AudioSetting.svelte";
+  import SaveSetting from '$lib/Game/components/SaveSetting.svelte';
 </script>
 
 <div class="Menu">
@@ -8,6 +9,7 @@
     <a class="play-btn" href="{base}/game">PLAY</a>
   </div>
   <AudioSetting />
+  <SaveSetting />
 </div>
 
 <style>
@@ -21,8 +23,8 @@
     margin: 0;
 
     grid-template-areas:
-      "Play"
-      "AudioSetting";
+      "Play Play"
+      "AudioSetting SaveSetting";
 
     display: grid;
     position: relative;
