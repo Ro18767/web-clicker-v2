@@ -15,11 +15,9 @@
   <Balance />
   <LevelSelector />
   <Store />
-  <SaveSetting />
   <GameStatistics />
   <Enemy />
   <AudioSetting />
-  <SaveSetting />
   
 </div>
 <style>
@@ -33,7 +31,7 @@
       "Balance LevelSelector"
       "Store Enemy"
       "GameStatistics Enemy"
-      "AudioSetting SaveSetting";
+      "AudioSetting AudioSetting";
     grid-template-columns: 50% 50%;
     grid-template-rows: auto 1fr 1fr auto;
 
