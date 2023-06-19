@@ -1,5 +1,7 @@
 import { get, writable } from "svelte/store";
 import { browser } from "$app/environment";
+import { goto } from "$app/navigation";
+import { base } from '$app/paths';
 /** 
  * @template T
  * @typedef {import('svelte/store').Writable<T>} Writable */
@@ -112,8 +114,7 @@ export function localStorageClear() {
 /**
  * @returns {void}
  */
-export function localStorageExport() 
-{
+export function localStorageExport() {
     if (!browser) return;
 
     const array = [JSON.stringify(window.localStorage)];
@@ -132,20 +133,79 @@ export function localStorageExport()
 /**
  * @returns {void}
  */
-export function localStorageImport() 
-{
+
+let input;
+
+export function localStorageImport() {
     if (!browser) return;
+
+    if (input == null) {
+        input = document.createElement("input");
+
+        input.style.display = "none";
+        input.type = "file";
+        document.body.append(input);
+        
+        input.onchange = () => {
+            const file = input.files[0];
+            console.log(input.value);
+            console.log(file);
+
+            input.value = '';
+
+            if(file == null)
+            {
+                return;
+            }
+
+            file.text().then((result) => 
+            {
+                console.log(result);
+
+                try 
+                {
+                    let newSave = JSON.parse(result);
+                    if(newSave == null)
+                    {
+                        return;
+                    }
+                    if(typeof newSave !== 'object')
+                    {
+                        return;
+                    }
+                    localStorage.clear();
+                    Object.entries(newSave).forEach(([key,value]) => 
+                    {
+                        if(typeof key !== 'string')
+                        {
+                            return
+                        }
+                        if(typeof value !== 'string')
+                        {
+                            return;
+                        }
+
+                        localStorage.setItem(key ,value);
+                    });
+
+                    window.location.href = `${base}/`;
+
+                } catch (error) 
+                {
+                    console.error(error);
+                    alert('save is not valid');
+                }
+                
+            }).catch((err) => {
+                console.error(err);
+                alert('save is not valid');
+            });
+        }
+    }
     
-    const input = document.createElement("input");
-    input.style.display = "none";
-    input.type = "file";
-    document.body.append(input);
     console.log("a");
     input.click();
     console.log("b");
-    input.onchange = ()=>
-    {
-        console.log(input.value);
-    }
+
     //input.remove();
 }

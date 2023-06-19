@@ -11,7 +11,7 @@
   {
     if (!window.confirm("Are you sure want to import the save?(it will overide this save!)")) return;
     localStorageImport();
-    goto(`${base}/`);
+    
   }
   function exportSave()
   {
