@@ -56,9 +56,14 @@
   import { localStorageWriteble } from "$lib/store/localStorageStore.js";
 
   let lvlArr = derived(
-    upgradeInfoArr.map(({ code, lvl }) =>
-      localStorageWriteble(`Store.${code}.lvl`, /** @type {number} */ (lvl))
-    ),
+    upgradeInfoArr.map(({ code, lvl }, index) => {
+      let store = localStorageWriteble(
+        `Store.${code}.lvl`,
+        /** @type {number} */ (lvl)
+      );
+      store.update((lvl) => Math.max(initialUpgradeInfoArr[index].lvl, lvl));
+      return store;
+    }),
     (lvlArr) => {
       DPC = 0;
       DPS = 0;
