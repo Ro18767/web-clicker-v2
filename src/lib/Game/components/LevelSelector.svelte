@@ -8,7 +8,9 @@
 <div class="LevelSelector">
   <div class="lvls">
     {#each { length: $maxLvl + 1 } as _, i}
-      <button on:click={() => ($lvl = i)}>{i + 1}</button>
+      <button class:selected={$lvl === i} on:click={() => ($lvl = i)}
+        >{i + 1}</button
+      >
     {/each}
   </div>
 </div>
@@ -31,5 +33,10 @@
     justify-content: center;
     align-items: center;
     border-width: 1px;
+ 
+    position: relative;
+  }
+  .LevelSelector button.selected {
+    border-radius: 1em;
   }
 </style>

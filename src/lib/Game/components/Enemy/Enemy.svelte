@@ -6,6 +6,7 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { gameStatisticStore } from "../Statistics/GameStatistics.js";
+  import atackCursor from "./atack.cur?url";
 
   export let maxLvl = localStorageWriteble("Game.maxLvl", 0);
   export let lvl = localStorageWriteble("Game.lvl", 0);
@@ -96,7 +97,7 @@
 
 <button class="Enemy" on:click={click}>
   <span>{$lvl + 1} lvl.</span>
-  <div class="image">
+  <div class="image" style:--cursor="url({atackCursor})">
     {#if browser}
       <img {src} {alt} />
     {/if}
@@ -133,5 +134,8 @@
     height: 100%;
     justify-content: center;
     align-items: center;
+  }
+  img {
+    cursor: var(--cursor), pointer;
   }
 </style>

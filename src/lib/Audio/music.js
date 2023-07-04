@@ -11,6 +11,7 @@ export let music;
 if (browser) {
     music = new Audio(musicSrc);
     music.loop = true;
+    music.volume = 0.05;
 }
 if (browser) {
     derived([page, enabled], ([$page, $enabled]) => $page.url?.pathname === `${base}/game` && $enabled)
@@ -22,7 +23,7 @@ async function musicUpdate(enable = false) {
     try {
         if (music == null) return;
         if (enable) {
-            await music.play().catch(() => {});
+            await music.play().catch(() => { });
         }
         if (!enable) {
             music.pause();

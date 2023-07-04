@@ -6,7 +6,7 @@
 
 <div class="Menu">
   <div class="PlayButtonWrap">
-    <a class="play-btn" href="{base}/game">PLAY</a>
+    <a class="play-btn" href="{base}/game">PLAY ►</a>
   </div>
   <AudioSetting />
   <SaveSetting />
@@ -40,7 +40,8 @@
   .play-btn {
     padding: 0;
     margin: 0;
-
+    font-size: 4em;
+    font-weight: bold;
     position: relative;
   }
 </style>

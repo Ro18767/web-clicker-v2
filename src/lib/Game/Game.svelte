@@ -5,9 +5,10 @@
   import LevelSelector from "./components/LevelSelector.svelte";
   import GameStatistics from "./components/Statistics/GameStatistics.svelte";
   import Store from "./components/Store/Store.svelte";
-  import { setContext } from 'svelte';
-  
-  setContext('isInsideGame', true);
+  import { setContext } from "svelte";
+  import { base } from "$app/paths";
+
+  setContext("isInsideGame", true);
 </script>
 
 <div class="Game">
@@ -17,8 +18,11 @@
   <GameStatistics />
   <Enemy />
   <AudioSetting />
-  
+  <div class="back-btn-wraper">
+    <a class="back-btn" href="{base}/">Back to Menu</a>
+  </div>
 </div>
+
 <style>
   .Game {
     width: 100%;
@@ -30,7 +34,7 @@
       "Balance LevelSelector"
       "Store Enemy"
       "GameStatistics Enemy"
-      "AudioSetting AudioSetting";
+      "AudioSetting BackButton";
     grid-template-columns: 50% 50%;
     grid-template-rows: auto 1fr 1fr auto;
 
@@ -40,5 +44,15 @@
   .Game > :global(*) {
     box-shadow: 0 0 0 1px;
     padding: 0.5em;
+  }
+  .back-btn-wraper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .back-btn {
+    float: right;
+    grid-area: BackButton;
   }
 </style>
